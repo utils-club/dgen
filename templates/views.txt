@@ -1,0 +1,20 @@
+"""views for {{app.name}}
+{{app.description}}
+"""
+from rest_framework import viewsets, permissions
+
+from .models import (
+    {% for entity in app.entities %} {{entity.name}}, {% endfor %}
+    )
+from .serializers import (
+    {% for entity in app.entities %} {{entity.name}}Serializer, {% endfor %}
+    )
+
+{% for entity in app.entities %}
+
+class {{entity.name}}ViewSet(viewsets.ModelViewSet):
+    queryset = {{entity.name}}
+    serializer_class = {{entity.name}}Serializer
+    permission_classes = [permissions.IsAuthenticated]
+
+{% endfor %}

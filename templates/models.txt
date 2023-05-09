@@ -1,0 +1,24 @@
+"""models for {{app.name}}
+{{app.description}}
+"""
+from django import models
+
+{% for entity in app.entities %}
+
+class {{entity.name}}(models.Model):
+    """
+    {{entity.description}}
+    """
+{% for field in entity.fields %}    {{field.name}} = models.{{field.type}}({{field.args}}) 
+{% endfor %}
+
+{% if entity.methods %}
+{% for method in entity.methods%}
+    def {{method.name}}(self, *args, **kwargs):
+        """
+        {{method.description}}
+        """
+        pass
+{% endfor %}
+{% endif %}
+{% endfor %}

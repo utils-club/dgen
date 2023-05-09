@@ -1,0 +1,10 @@
+from django.contrib import admin
+
+from .models import (
+    {% for entity in app.entities %} {{entity.name}}, {% endfor %}
+    )
+
+admin.site.register(
+    {% for entity in app.entities%}{{entity.name}},
+    {% endfor %}
+)

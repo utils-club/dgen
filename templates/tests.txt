@@ -1,0 +1,15 @@
+from django.test import TestCase
+from django.test import Client
+
+{% for entity in app.entities %}
+class {{entity.name}}TestCase(TestCase):
+    """Tests for {{entity.name}}"""
+
+    def setUp(self, *args, **kwargs):
+        super().setUp(*args, **kwargs)
+        self.client = Client()
+
+    def tearDown(self, *args, **kwargs):
+        super().tearDown(*args, **kwargs)
+
+{% endfor %}

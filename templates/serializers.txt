@@ -1,0 +1,17 @@
+"""serializers for {{app.name}}
+{{app.description}}
+"""
+from rest_framework import serializers
+
+from .models import (
+    {% for entity in app.entities %} {{entity.name}}, {% endfor %}
+    )
+
+{% for entity in app.entities %}
+
+class {{entity.name}}Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = {{entity.name}}
+        fields = '__all__'
+
+{% endfor %}
