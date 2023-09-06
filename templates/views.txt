@@ -13,7 +13,8 @@ from .serializers import (
 {% for entity in app.entities %}
 
 class {{entity.name}}ViewSet(viewsets.ModelViewSet):
-    queryset = {{entity.name}}
+    """views for {{entity.name}}"""
+    queryset = {{entity.name}}.objects
     serializer_class = {{entity.name}}Serializer
     permission_classes = [permissions.IsAuthenticated]
 

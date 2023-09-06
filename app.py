@@ -10,6 +10,8 @@ from contextlib import contextmanager
 
 from jinja2 import Environment, FileSystemLoader
 
+from utils.field_handlers import process_field_line
+
 type_reg = re.compile("\-.+\-")
 doc_reg = re.compile("\(.+\)")
 base_dir = os.path.dirname(__file__)
@@ -35,33 +37,8 @@ def get_model_field(_type: str) -> str:
 def get_fields(metadata: list):
     answer = []
     for field in metadata["fields"]:
-        if "," in field:
-            info = [a.strip() for a in field.split(",")]
-            _type = (
-                "CharField"
-                if not ((explicit := [a for a in info if type_reg.match(a)]))
-                else get_model_field(explicit[0][1:-1])
-            )
-            _help = (
-                ""
-                if not (explicit := [a for a in info if doc_reg.match(a)])
-                else explicit[0][1:-1]
-            )
-            answer.append(
-                {
-                    "name": info[0],
-                    "type": _type,
-                    "args": f'help="{_help}"',
-                }
-            )
-        else:
-            answer.append(
-                {
-                    "name": field,
-                    "type": "CharField",
-                    "args": "max_length=100",
-                }
-            )
+        line = process_field_line(field)
+        answer.append(line)
     return answer
 
 
@@ -139,6 +116,7 @@ def generate_apps(project_path: str, app_structure: str):
     environment = Environment(loader=FileSystemLoader(template_dir))
     template_files = [a for a in os.listdir(template_dir) if a and a.endswith(".txt")]
     templates = {a: environment.get_template(a) for a in template_files}
+    project_path = os.path.abspath(project_path)
     with project_env(project_path):
         for data in app:
             if data["name"] == "users" and data["description"] == "auth":

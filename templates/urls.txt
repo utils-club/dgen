@@ -6,7 +6,7 @@ from .views import (
     {% for entity in app.entities %} {{entity.name}}ViewSet, {% endfor %}
     )
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 {% for entity in app.entities %}router.register(r'{{entity._name}}', {{entity.name}}ViewSet)
 {% endfor %}
 urlpatterns = router.urls

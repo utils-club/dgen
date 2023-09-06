@@ -1,0 +1,74 @@
+finances:
+  description: manage personal finance records
+
+  currency:
+    description: currency to be supported, all currency prices in USD
+    fields:
+      - name
+      - code, -Char-, (3 lenght currency code)
+
+  currency_rate:
+    description: record for current currency rate
+    fields:
+      - currency, -Foreign-, (associated currency)
+      - fetch_at, -Date-, (date currency rate was fetched, it changes in a daily basis)
+      - value, -Decimal-, (currency value in usd)
+      
+  account:
+    description: account
+    fields:
+      - name
+      - type, -Char-, (type of account, can be a bank, cash, loan_line, investment account)
+      - owner, (user who owns the account)
+      - description, (describe the purpose of the account)
+
+  transaction_category:
+    description: describe the kind of transaction
+    fields:
+      - name
+      - is_income, -Bool-, (describe if category is associated to money income or outcome)
+
+  transaction:
+    description: money movement associated to transaction
+    fields:
+      - account, -Foreign-, (associated account)
+      - info, -Text-, (transaction description)
+      - amount, -Decimal-, (transaction amount)
+      - currency, -Char-, (currency of the transaction amount, must be in supported currencies)
+      - category, -Foreign-, (transaction category)
+      - state, -Bool-, (state of transaction, can be false for pending or and true for settled)
+      - created_at, -DateTime-, (datetime transaction was done)
+
+  internal_transaction:
+    description: show relation between transactions done between personal accounts
+    fields:
+      - source, -Foreign-, (transaction sending money to account, debit)
+      - destination, -Foreign-, (transaction receiving money to account, credit)
+
+  electronic_invoice:
+    description: save electronic invoice info
+    fields:
+      - code
+      - description, -Text-, (info associated to electronic invoice)
+      - amount, -Decimal-, (invoice amount)
+      - document, -File-, (original file sent with invoice)
+      - created_at, -DateTime-, (datetime invoice was recorded in db)
+
+sensitive_data:
+  description: manage sensitive data such as documents and credentials
+
+  credential:
+    description: information to access a resource
+    fields:
+      - name, -Char-, (name given to the credential)
+      - resource, -Char-, (what can be accessed with the credential, a url if is a web service, a file name if it is a password...)
+      - resource_type, -Char-, (says if resource is financial, work, medical or sensitive info)
+      - password, -Char-, (if credential is a password or requires a password)
+      - key, -File-, (if credential is a key or requires a key)
+      - tags, -Char-, (tags to group credentials)
+      - notes, -Text-, (information associated, descriptions or other relevant information)
+      - associated_files, -File-, (optional files that can be necessary)
+      
+
+users:
+    description: auth

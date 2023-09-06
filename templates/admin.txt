@@ -4,7 +4,5 @@ from .models import (
     {% for entity in app.entities %} {{entity.name}}, {% endfor %}
     )
 
-admin.site.register(
-    {% for entity in app.entities%}{{entity.name}},
-    {% endfor %}
-)
+{% for entity in app.entities%}
+admin.site.register({{entity.name}}){% endfor %}
